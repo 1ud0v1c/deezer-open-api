@@ -10,8 +10,8 @@ class HomePresenter(
         homeInteractor.homeContractInteractor = this
     }
 
-    fun start() {
-        homeInteractor.fetchAlbums()
+    fun start(currentPage: Int = 0) {
+        homeInteractor.fetchAlbums(currentPage)
     }
 
     override fun onSuccess(albums: List<Album>) {

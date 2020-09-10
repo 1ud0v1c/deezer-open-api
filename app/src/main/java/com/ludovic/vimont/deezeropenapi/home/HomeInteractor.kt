@@ -1,5 +1,6 @@
 package com.ludovic.vimont.deezeropenapi.home
 
+import com.ludovic.vimont.deezeropenapi.api.DeezerAPI
 import com.ludovic.vimont.deezeropenapi.api.DeezerService
 import com.ludovic.vimont.deezeropenapi.model.Album
 import com.ludovic.vimont.deezeropenapi.model.AlbumResponse
@@ -16,9 +17,10 @@ import retrofit2.Response
 class HomeInteractor {
     var homeContractInteractor: HomeContract.Interactor? = null
 
-    fun fetchAlbums() {
+    fun fetchAlbums(currentPage: Int = 0) {
+        val currentIndex: Int = currentPage * DeezerAPI.Constants.NUMBER_OF_ITEM_PER_REQUEST
         GlobalScope.launch {
-            val albumsRequest: Call<AlbumResponse> = DeezerService.getAPI().getAlbums()
+            val albumsRequest: Call<AlbumResponse> = DeezerService.getAPI().getAlbums(currentIndex)
             val result: Response<AlbumResponse> = albumsRequest.execute()
             if (result.isSuccessful) {
                 result.body()?.let { response ->

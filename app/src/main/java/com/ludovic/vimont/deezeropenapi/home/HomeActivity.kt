@@ -3,9 +3,11 @@ package com.ludovic.vimont.deezeropenapi.home
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ludovic.vimont.deezeropenapi.R
 import com.ludovic.vimont.deezeropenapi.databinding.ActivityMainBinding
 import com.ludovic.vimont.deezeropenapi.model.Album
+import com.ludovic.vimont.deezeropenapi.ui.EndlessRecyclerViewScrollListener
 import com.ludovic.vimont.deezeropenapi.ui.GridSpacingItemDecoration
 
 /**
@@ -30,7 +32,17 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
         mainBinding.recyclerView.layoutManager = gridLayoutManager
         val gridSpaceDimension: Int = resources.getDimension(R.dimen.album_grid_space).toInt()
         mainBinding.recyclerView.addItemDecoration(GridSpacingItemDecoration(GRID_SPAN_COUNT, gridSpaceDimension, false))
-        
+
+        val endlessRecyclerViewScrollListener = object : EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            override fun onLoadMore(
+                currentPage: Int,
+                totalItemsCount: Int,
+                view: RecyclerView?) {
+                homePresenter.start(currentPage)
+            }
+        }
+        mainBinding.recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener)
+
         homePresenter.start()
     }
 
