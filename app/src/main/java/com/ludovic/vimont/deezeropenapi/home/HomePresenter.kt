@@ -24,11 +24,14 @@ class HomePresenter(
             400 -> {
                 homeView.showErrorMessage("Your request was formatted incorrectly or missing a required parameter(s)..")
             }
-            403 -> {
-                homeView.showErrorMessage("You weren't authorized to make your request; most likely this indicates an issue with your API Key.")
+            401 -> {
+                homeView.showErrorMessage("You weren't authorized to make your request.")
+            }
+            404 -> {
+                homeView.showErrorMessage("API not found, this url has not been recognized by the server.")
             }
             429 -> {
-                homeView.showErrorMessage("Your API Key is making too many requests. Read about requesting a Production Key to upgrade your API Key rate limits.")
+                homeView.showErrorMessage("You made too many requests in a short period of time, please retry later.")
             }
             else -> {
                 homeView.showErrorMessage(errorMessage)

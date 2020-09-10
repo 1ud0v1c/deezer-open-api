@@ -1,7 +1,6 @@
 package com.ludovic.vimont.deezeropenapi.home
 
 import android.content.Context
-import android.util.Log
 import com.ludovic.vimont.deezeropenapi.api.DeezerAPI
 import com.ludovic.vimont.deezeropenapi.api.DeezerService
 import com.ludovic.vimont.deezeropenapi.helper.NetworkHelper
@@ -20,7 +19,8 @@ import retrofit2.Response
  */
 class HomeInteractor {
     private val exceptionHandler= CoroutineExceptionHandler { _, _ ->
-        dispatchError(-1, "The request failed because of a timeout. Please retry later.")
+        val timeoutErrorMessage = "The request failed because of a timeout. Please retry later or with a better connection."
+        dispatchError(-1, timeoutErrorMessage)
     }
     var homeContractInteractor: HomeContract.Interactor? = null
     private var lastAlbumResponse: AlbumResponse? = null
@@ -29,12 +29,13 @@ class HomeInteractor {
         val currentIndex: Int = currentPage * DeezerAPI.Constants.NUMBER_OF_ITEM_PER_REQUEST
         GlobalScope.launch(exceptionHandler) {
             if (!NetworkHelper.isOnline(context)) {
-                dispatchError(-1, "You are not connected to internet. Please pull to refresh when connected.")
+                dispatchError(-1, "You are not connected to internet. Try to refresh while being connected.")
                 return@launch
             }
             val albumsRequest: Call<AlbumResponse> = DeezerService.getAPI().getAlbums(currentIndex)
-            lastAlbumResponse?.let {
-                if (it.next == null) {
+            lastAlbumResponse?.let { albumResponse ->
+                // If we arrive here, we touched the end of the list, there is nothing more to fetch.
+                if (albumResponse.next == null) {
                     dispatchResult(ArrayList())
                     return@launch
                 }

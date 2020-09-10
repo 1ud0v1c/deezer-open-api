@@ -5,4 +5,5 @@
         <item quantity="one">%d song</item>
         <item quantity="other">%d songs</item>
     </plurals>
+    <string name="snack_bar_button_action">Retry</string>
 </resources>

@@ -109,6 +109,10 @@ abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollListener
         }
     }
 
+    fun getCurrentPage(): Int {
+        return currentPage
+    }
+
     /**
      * Call this method whenever performing new searches
      */

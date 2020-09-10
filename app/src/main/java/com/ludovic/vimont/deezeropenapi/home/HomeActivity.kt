@@ -1,9 +1,12 @@
 package com.ludovic.vimont.deezeropenapi.home
 
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.ludovic.vimont.deezeropenapi.R
 import com.ludovic.vimont.deezeropenapi.databinding.ActivityMainBinding
 import com.ludovic.vimont.deezeropenapi.model.Album
@@ -21,6 +24,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
 
     private val albumAdapter = HomeAlbumAdapter(ArrayList())
     private lateinit var mainBinding: ActivityMainBinding
+    private lateinit var endlessRecyclerViewScrollListener: EndlessRecyclerViewScrollListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +37,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
         val gridSpaceDimension: Int = resources.getDimension(R.dimen.album_grid_space).toInt()
         mainBinding.recyclerView.addItemDecoration(GridSpacingItemDecoration(GRID_SPAN_COUNT, gridSpaceDimension, false))
 
-        val endlessRecyclerViewScrollListener = object : EndlessRecyclerViewScrollListener(gridLayoutManager) {
+        endlessRecyclerViewScrollListener = object : EndlessRecyclerViewScrollListener(gridLayoutManager) {
             override fun onLoadMore(
                 currentPage: Int,
                 totalItemsCount: Int,
@@ -51,6 +55,16 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
     }
 
     override fun showErrorMessage(errorMessage: String) {
-        println(errorMessage)
+        val snackBar: Snackbar = Snackbar.make(mainBinding.root,
+            errorMessage, Snackbar.LENGTH_INDEFINITE
+        )
+        snackBar.setAction(getString(R.string.snack_bar_button_action)) {
+            homePresenter.start(applicationContext, endlessRecyclerViewScrollListener.getCurrentPage())
+            snackBar.dismiss()
+        }
+        val snackBarView: View = snackBar.view
+        val snackBarTextView: TextView = snackBarView.findViewById(com.google.android.material.R.id.snackbar_text)
+        snackBarTextView.maxLines = 3
+        snackBar.show()
     }
 }
