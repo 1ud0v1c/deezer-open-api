@@ -1,0 +1,12 @@
+<resources>
+    <dimen name="activity_horizontal_little_margin">8dp</dimen>
+    <dimen name="activity_vertical_little_margin">8dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="album_grid_space">12dp</dimen>
+    <dimen name="album_cover_size">150dp</dimen>
+    <dimen name="album_cover_rounded_corners">12dp</dimen>
+    <dimen name="album_information_text_size">12sp</dimen>
+    <dimen name="album_item_bottom_margin">4dp</dimen>
+</resources>

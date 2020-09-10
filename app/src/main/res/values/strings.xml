@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Deezer OpenAPI</string>
+    <string name="home_activity_cover_content_description">Album cover</string>
+    <plurals name="home_activity_cover_album_number_of_track">
+        <item quantity="one">%d song</item>
+        <item quantity="other">%d songs</item>
+    </plurals>
 </resources>
