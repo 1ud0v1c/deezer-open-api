@@ -38,12 +38,12 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
                 currentPage: Int,
                 totalItemsCount: Int,
                 view: RecyclerView?) {
-                homePresenter.start(currentPage)
+                homePresenter.start(applicationContext, currentPage)
             }
         }
         mainBinding.recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener)
 
-        homePresenter.start()
+        homePresenter.start(applicationContext)
     }
 
     override fun setAlbums(albums: List<Album>) {

@@ -16,7 +16,7 @@ import com.ludovic.vimont.deezeropenapi.model.Album
 
 class HomeAlbumAdapter(private val albums: ArrayList<Album>): RecyclerView.Adapter<HomeAlbumAdapter.AlbumViewHolder>() {
     companion object {
-        const val FADE_IN_DURATION = 1_000
+        const val FADE_IN_DURATION = 300
     }
     var onItemClick: ((Album) -> Unit)? = null
 
@@ -34,6 +34,7 @@ class HomeAlbumAdapter(private val albums: ArrayList<Album>): RecyclerView.Adapt
         val cornersRadiusSize: Int = context.resources.getDimension(R.dimen.album_cover_rounded_corners).toInt()
         Glide.with(context)
             .load(album.cover_medium)
+            .placeholder(R.drawable.album_default_cover)
             .transition(DrawableTransitionOptions.withCrossFade(FADE_IN_DURATION))
             .apply(RequestOptions.bitmapTransform(RoundedCorners(cornersRadiusSize)))
             .into(holder.imageViewCover)

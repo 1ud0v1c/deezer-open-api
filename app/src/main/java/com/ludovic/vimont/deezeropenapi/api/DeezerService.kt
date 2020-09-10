@@ -28,7 +28,7 @@ object DeezerService {
 
     fun getAPI(): DeezerAPI = api
 
-    private fun setClient(okHttpClient: OkHttpClient) {
+    fun setClient(okHttpClient: OkHttpClient) {
         this.client = okHttpClient
         val retrofit: Retrofit = buildRetrofit()
         api = retrofit.create(DeezerAPI::class.java)

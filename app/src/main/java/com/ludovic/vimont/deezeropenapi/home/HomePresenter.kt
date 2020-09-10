@@ -1,5 +1,6 @@
 package com.ludovic.vimont.deezeropenapi.home
 
+import android.content.Context
 import com.ludovic.vimont.deezeropenapi.model.Album
 
 class HomePresenter(
@@ -10,8 +11,8 @@ class HomePresenter(
         homeInteractor.homeContractInteractor = this
     }
 
-    fun start(currentPage: Int = 0) {
-        homeInteractor.fetchAlbums(currentPage)
+    fun start(context: Context, currentPage: Int = 0) {
+        homeInteractor.fetchAlbums(context, currentPage)
     }
 
     override fun onSuccess(albums: List<Album>) {

@@ -22,6 +22,7 @@ abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollListener
     // The current offset index of data you have loaded
     private var currentPage = 0
     private val startingPageIndex = 0
+
     private var previousTotalItemCount = 0
 
     constructor(layoutManager: LinearLayoutManager) {
