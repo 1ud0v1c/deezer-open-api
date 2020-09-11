@@ -9,4 +9,9 @@
     <dimen name="album_cover_rounded_corners">12dp</dimen>
     <dimen name="album_information_text_size">12sp</dimen>
     <dimen name="album_item_bottom_margin">4dp</dimen>
+
+    <dimen name="detail_activity_album_cover_size">250dp</dimen>
+    <dimen name="detail_activity_album_title_size">16sp</dimen>
+    <dimen name="detail_activity_track_adapter_item_decoration_margin">8dp</dimen>
+    <dimen name="detail_activity_item_track_vertical_separator_width">1dp</dimen>
 </resources>

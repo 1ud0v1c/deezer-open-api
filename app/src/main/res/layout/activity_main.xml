@@ -7,4 +7,4 @@
     android:layout_height="match_parent"
     android:padding="8dp"
     android:background="@drawable/activity_background_gradient"
-    tools:context=".home.HomeActivity" />
+    tools:context="com.ludovic.vimont.deezeropenapi.screens.home.HomeActivity" />

@@ -1,4 +1,4 @@
-package com.ludovic.vimont.deezeropenapi.home
+package com.ludovic.vimont.deezeropenapi.screens.home
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -14,6 +14,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.ludovic.vimont.deezeropenapi.R
 import com.ludovic.vimont.deezeropenapi.model.Album
 
+/**
+ * Adapter used to display result item received thanks to HomeInteractor
+ */
 class HomeAlbumAdapter(private val albums: ArrayList<Album>): RecyclerView.Adapter<HomeAlbumAdapter.AlbumViewHolder>() {
     companion object {
         const val FADE_IN_DURATION = 300
@@ -40,7 +43,7 @@ class HomeAlbumAdapter(private val albums: ArrayList<Album>): RecyclerView.Adapt
             .into(holder.imageViewCover)
 
         holder.textViewAlbumTitle.text = album.title
-        holder.textViewAlbumArtistName.text = album.artist.name
+        holder.textViewAlbumArtistName.text = album.artist?.name
         val pluralsNumberOfTrackId: Int = R.plurals.home_activity_cover_album_number_of_track
         holder.textViewNumberOfTracks.text = context.resources.getQuantityString(pluralsNumberOfTrackId, album.nb_tracks, album.nb_tracks)
         holder.itemView.setOnClickListener {

@@ -1,9 +1,25 @@
 <resources>
     <string name="app_name">Deezer OpenAPI</string>
-    <string name="home_activity_cover_content_description">Album cover</string>
+
+    <!-- Common action -->
+    <string name="ok_action">OK</string>
+    <string name="retry_action">Retry</string>
+
+    <!-- Home Activity -->
+    <string name="home_activity_cover_content_description">Main activity album cover</string>
     <plurals name="home_activity_cover_album_number_of_track">
         <item quantity="one">%d song</item>
         <item quantity="other">%d songs</item>
     </plurals>
-    <string name="snack_bar_button_action">Retry</string>
+
+    <!-- Detail Activity -->
+    <string name="detail_activity_cover_content_description">Detail activity album cover</string>
+    <string name="detail_activity_album_information">Album by %s - %s</string>
+    <string name="detail_activity_album_duration">Duration: %s - %d tracks</string>
+    <string name="detail_activity_album_artist">Album Artist</string>
+    <string name="detail_activity_artist_wikipedia">https://en.wikipedia.org/wiki/%s</string>
+
+    <string name="item_track_play_content_description">Item track play preview</string>
+    <string name="item_track_share_action_content_description">Item track share action</string>
+    <string name="item_track_see_on_web_content_description">Item track see on web action</string>
 </resources>

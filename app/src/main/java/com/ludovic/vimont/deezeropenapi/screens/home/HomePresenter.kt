@@ -1,4 +1,4 @@
-package com.ludovic.vimont.deezeropenapi.home
+package com.ludovic.vimont.deezeropenapi.screens.home
 
 import android.content.Context
 import com.ludovic.vimont.deezeropenapi.model.Album

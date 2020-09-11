@@ -1,7 +1,6 @@
-package com.ludovic.vimont.deezeropenapi.home
+package com.ludovic.vimont.deezeropenapi.screens.home
 
 import android.content.Context
-import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import com.ludovic.vimont.deezeropenapi.NetworkMock

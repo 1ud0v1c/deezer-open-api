@@ -1,5 +1,6 @@
-package com.ludovic.vimont.deezeropenapi.home
+package com.ludovic.vimont.deezeropenapi.screens.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -10,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.ludovic.vimont.deezeropenapi.R
 import com.ludovic.vimont.deezeropenapi.databinding.ActivityMainBinding
 import com.ludovic.vimont.deezeropenapi.model.Album
+import com.ludovic.vimont.deezeropenapi.screens.detail.DetailActivity
 import com.ludovic.vimont.deezeropenapi.ui.EndlessRecyclerViewScrollListener
 import com.ludovic.vimont.deezeropenapi.ui.GridSpacingItemDecoration
 
@@ -18,6 +20,7 @@ import com.ludovic.vimont.deezeropenapi.ui.GridSpacingItemDecoration
  */
 class HomeActivity : AppCompatActivity(), HomeContract.View {
     companion object {
+        const val KEY_INTENT_ALBUM_EXTRA = "home_activity_album_intent_key"
         const val GRID_SPAN_COUNT = 2
     }
     private val homePresenter = HomePresenter(this, HomeInteractor())
@@ -46,6 +49,11 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
             }
         }
         mainBinding.recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener)
+        albumAdapter.onItemClick = { album ->
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra(KEY_INTENT_ALBUM_EXTRA, album)
+            startActivity(intent)
+        }
 
         homePresenter.start(applicationContext)
     }
@@ -58,7 +66,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
         val snackBar: Snackbar = Snackbar.make(mainBinding.root,
             errorMessage, Snackbar.LENGTH_INDEFINITE
         )
-        snackBar.setAction(getString(R.string.snack_bar_button_action)) {
+        snackBar.setAction(getString(R.string.retry_action)) {
             homePresenter.start(applicationContext, endlessRecyclerViewScrollListener.getCurrentPage())
             snackBar.dismiss()
         }
