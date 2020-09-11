@@ -41,12 +41,16 @@ class DetailInteractor {
             val result: Response<TrackResponse> = tracksRequest.execute()
             if (result.isSuccessful) {
                 result.body()?.let { response ->
-                    if (response.total > 0) {
-                        dispatchResult(response.data)
-                    } else if (result.code() == 200) {
-                        dispatchError(result.code(), "This album has no track bind to it.")
-                    } else {
-                        dispatchError(result.code(), result.errorBody().toString())
+                    when {
+                        response.total > 0 -> {
+                            dispatchResult(response.data)
+                        }
+                        result.code() == 200 -> {
+                            dispatchError(result.code(), "This album has no track bind to it.")
+                        }
+                        else -> {
+                            dispatchError(result.code(), result.errorBody().toString())
+                        }
                     }
                 }
             }
