@@ -1,6 +1,7 @@
 package com.ludovic.vimont.deezeropenapi.home
 
 import android.content.Context
+import android.util.Log
 import com.ludovic.vimont.deezeropenapi.api.DeezerAPI
 import com.ludovic.vimont.deezeropenapi.api.DeezerService
 import com.ludovic.vimont.deezeropenapi.helper.NetworkHelper
@@ -18,7 +19,11 @@ import retrofit2.Response
  * of the GIPHY API.
  */
 class HomeInteractor {
-    private val exceptionHandler= CoroutineExceptionHandler { _, _ ->
+    companion object {
+        val TAG: String = HomeInteractor::class.java.simpleName
+    }
+    private val exceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
+        Log.e(TAG, "An error occurred while fetching data.", exception)
         val timeoutErrorMessage = "The request failed because of a timeout. Please retry later or with a better connection."
         dispatchError(-1, timeoutErrorMessage)
     }

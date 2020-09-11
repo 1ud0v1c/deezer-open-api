@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
  */
 object DeezerService {
     private var api: DeezerAPI
-    private var client: OkHttpClient = OkHttpClient.Builder().build()
+    private var client: OkHttpClient = OkHttpBuilder.getClient()
 
     init {
         val retrofit: Retrofit = buildRetrofit()

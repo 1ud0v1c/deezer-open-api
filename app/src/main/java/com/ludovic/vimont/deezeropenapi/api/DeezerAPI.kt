@@ -7,6 +7,8 @@ import retrofit2.http.Query
 
 interface DeezerAPI {
     object Constants {
+        const val HOSTNAME = "api.deezer.com"
+        const val CDN_HOSTNAME = "cdns-preview-2.dzcdn.net"
         const val BASE_URL = "https://api.deezer.com/2.0/"
         const val NUMBER_OF_ITEM_PER_REQUEST = 25
     }
