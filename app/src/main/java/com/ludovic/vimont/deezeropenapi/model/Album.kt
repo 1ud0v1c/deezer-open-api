@@ -24,7 +24,7 @@ data class Album(
     val time_add: Int
 ) : Parcelable {
     companion object {
-        const val DEEZER_RELEASE_DATE_FORMAT = "yyyy-mm-dd"
+        const val DEEZER_RELEASE_DATE_FORMAT = "yyyy-MM-dd"
         const val DESIRE_RELEASE_DATE_FORMAT = "dd/MM/yyy"
 
         @JvmField
@@ -43,10 +43,10 @@ data class Album(
         return id
     }
 
-    fun getReleaseDate(): String {
+    fun getReleaseDate(desiredReleaseDateFormat: String = DESIRE_RELEASE_DATE_FORMAT): String {
         val formatDate: Date? = SimpleDateFormat(DEEZER_RELEASE_DATE_FORMAT, Locale.getDefault()).parse(release_date)
         formatDate?.let { date ->
-            val desiredFormat = SimpleDateFormat(DESIRE_RELEASE_DATE_FORMAT, Locale.getDefault())
+            val desiredFormat = SimpleDateFormat(desiredReleaseDateFormat, Locale.getDefault())
             return desiredFormat.format(date)
         }
         return release_date
