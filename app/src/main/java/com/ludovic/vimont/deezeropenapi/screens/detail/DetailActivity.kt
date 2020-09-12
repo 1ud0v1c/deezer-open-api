@@ -25,7 +25,7 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
     }
     private val detailPresenter = DetailPresenter(this, DetailInteractor())
 
-    private val trackAdapter = TrackAdapter(ArrayList())
+    private val trackAdapter = DetailTrackAdapter(ArrayList())
     private lateinit var detailBinding: ActivityDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,7 +97,6 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
         var totalDurationInSec = 0
         for (track: Track in tracks) {
             totalDurationInSec += track.duration
-            println(track.duration)
         }
         val minutes: Int = (totalDurationInSec / 60)
         val seconds: Int = totalDurationInSec % 60

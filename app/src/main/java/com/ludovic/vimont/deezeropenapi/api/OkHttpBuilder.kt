@@ -29,15 +29,19 @@ object OkHttpBuilder {
 
         // Create an ssl socket factory with our all-trusting manager
         val sslSocketFactory: SSLSocketFactory = sslContext.socketFactory
+
         val builder = OkHttpClient.Builder()
         builder.sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
-        builder.hostnameVerifier { _, session ->
+        builder.hostnameVerifier { hostname, sslSession ->
             val hostnameVerifier: HostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier()
             val deezerHostname: String = DeezerAPI.Constants.HOSTNAME
             val cdnHostname: String = DeezerAPI.Constants.CDN_HOSTNAME
-            hostnameVerifier.verify(deezerHostname, session) || hostnameVerifier.verify(cdnHostname, session)
+            if (hostname == deezerHostname || hostname == cdnHostname) {
+                true
+            } else {
+                hostnameVerifier.verify(hostname, sslSession)
+            }
         }
-
         return builder.build()
     }
 }

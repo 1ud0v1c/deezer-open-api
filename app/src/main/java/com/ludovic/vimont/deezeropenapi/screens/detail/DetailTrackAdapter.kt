@@ -18,7 +18,7 @@ import com.ludovic.vimont.deezeropenapi.model.Track
 /**
  * Display each track of the clicked album by the user thanks to DetailInteractor
  */
-class TrackAdapter(private val tracks: ArrayList<Track>): RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+class DetailTrackAdapter(private val tracks: ArrayList<Track>): RecyclerView.Adapter<DetailTrackAdapter.TrackViewHolder>() {
     private var lastViewHolderClicked: TrackViewHolder? = null
     var onItemClick: ((Track) -> Unit)? = null
 

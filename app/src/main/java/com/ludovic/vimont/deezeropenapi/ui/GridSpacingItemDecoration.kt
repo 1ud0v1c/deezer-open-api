@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 /**
- * Add equal space between each item of a GridLayoutManager.
+ * Add equal space between each item of a GridLayoutManager. Useful for the HomeAlbumAdapter.
  */
 class GridSpacingItemDecoration(private val spanCount: Int,
                                 private val spacing: Int,
