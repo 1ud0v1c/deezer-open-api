@@ -25,9 +25,11 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
 
         mediaSession = MediaSessionCompat(baseContext, TAG).apply {
             setFlags(MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS)
-            val playStateActions = PlaybackStateCompat.ACTION_PLAY or PlaybackStateCompat.ACTION_PLAY_PAUSE
+
+            val playStateActions: Long = PlaybackStateCompat.ACTION_PLAY or PlaybackStateCompat.ACTION_PLAY_PAUSE
             stateBuilder = PlaybackStateCompat.Builder().setActions(playStateActions)
             setPlaybackState(stateBuilder.build())
+
             setCallback(AudioSessionCallback( this@MediaPlaybackService, this))
             setSessionToken(sessionToken)
         }
