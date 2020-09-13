@@ -1,6 +1,7 @@
 package com.ludovic.vimont.deezeropenapi.model
 
 import android.os.Build
+import com.ludovic.vimont.deezeropenapi.ModelMock
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -18,29 +19,7 @@ class AlbumTest {
 
     @Before
     fun setUp() {
-        album = buildAlbum(albumId)
-    }
-
-    private fun buildAlbum(albumId: Int, alternativeAlbum: Album? = null): Album {
-        val artist = Artist(
-            892, "Coldplay",
-            "http://api.deezer.com/2.0/artist/892/image",
-            "http://cdn-images.deezer.com/images/artist/04cf6c8a81a23e65663e7362d98d5ad9/56x56-000000-80-0-0.jpg",
-            "http://cdn-images.deezer.com/images/artist/04cf6c8a81a23e65663e7362d98d5ad9/250x250-000000-80-0-0.jpg",
-            "http://cdn-images.deezer.com/images/artist/04cf6c8a81a23e65663e7362d98d5ad9/500x500-000000-80-0-0.jpg",
-            "http://cdn-images.deezer.com/images/artist/04cf6c8a81a23e65663e7362d98d5ad9/1000x1000-000000-80-0-0.jpg",
-            "http://api.deezer.com/2.0/artist/892/top?limit=50"
-        )
-        return Album(
-            albumId, "A Rush of Blood to the Head", "http://www.deezer.com/album/299821",
-            "http://api.deezer.com/2.0/album/299821/image",
-            "http://cdn-images.deezer.com/images/cover/5ba1787e1ec36dbbca38ff01fea8fb21/56x56-000000-80-0-0.jpg",
-            "http://cdn-images.deezer.com/images/cover/5ba1787e1ec36dbbca38ff01fea8fb21/250x250-000000-80-0-0.jpg",
-            "http://cdn-images.deezer.com/images/cover/5ba1787e1ec36dbbca38ff01fea8fb21/500x500-000000-80-0-0.jpg",
-            "http://cdn-images.deezer.com/images/cover/5ba1787e1ec36dbbca38ff01fea8fb21/1000x1000-000000-80-0-0.jpg",
-            11, releaseDate, "album", alternativeAlbum, "http://api.deezer.com/2.0/album/299821/tracks",
-            artist, false, 1398530279
-        )
+        album = ModelMock.buildAlbum(albumId)
     }
 
     @Test
@@ -49,7 +28,7 @@ class AlbumTest {
         Assert.assertEquals(albumId, album.getId())
 
         // Now, we have an alternative album, we should have the alternative album id
-        album = buildAlbum(albumId, buildAlbum(alternativeAlbumId))
+        album = ModelMock.buildAlbum(albumId, ModelMock.buildAlbum(alternativeAlbumId))
         Assert.assertEquals(alternativeAlbumId, album.getId())
     }
 

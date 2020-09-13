@@ -31,7 +31,7 @@ class MediaNotificationBuilder {
     }
 
     fun buildNotification(context: Context, mediaSessionCompat: MediaSessionCompat, isPlaying: Boolean = false): Notification? {
-        val controller:MediaControllerCompat = mediaSessionCompat.controller
+        val controller: MediaControllerCompat = mediaSessionCompat.controller
         val mediaMetadata: MediaMetadataCompat = mediaSessionCompat.controller.metadata
         val description: MediaDescriptionCompat = mediaMetadata.description
 

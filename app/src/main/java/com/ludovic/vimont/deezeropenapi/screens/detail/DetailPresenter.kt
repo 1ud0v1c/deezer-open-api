@@ -7,7 +7,6 @@ class DetailPresenter(
     private val detailView: DetailContract.View,
     private val detailInteractor: DetailInteractor
 ) : DetailContract.Interactor {
-
     init {
         detailInteractor.detailContractInteractor = this
     }

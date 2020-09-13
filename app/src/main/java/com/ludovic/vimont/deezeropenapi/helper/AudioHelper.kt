@@ -17,7 +17,7 @@ object AudioHelper {
     private val mediaDescriptionBuilder = MediaDescriptionCompat.Builder()
     private val playbackStateCompatBuilder = PlaybackStateCompat.Builder()
 
-    fun buildMediaDescriptionFromTrack(album: Album, track: Track, bitmap: Bitmap?): MediaDescriptionCompat {
+    fun buildMediaDescriptionFromTrack(album: Album, track: Track, bitmap: Bitmap? = null): MediaDescriptionCompat {
         val songDuration = Bundle()
         songDuration.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, PREVIEW_DURATION_IN_MS)
 

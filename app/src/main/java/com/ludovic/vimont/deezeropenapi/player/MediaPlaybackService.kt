@@ -30,7 +30,7 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
             stateBuilder = PlaybackStateCompat.Builder().setActions(playStateActions)
             setPlaybackState(stateBuilder.build())
 
-            setCallback(AudioSessionCallback( this@MediaPlaybackService, this))
+            setCallback(AudioSessionCallback(this@MediaPlaybackService, this))
             setSessionToken(sessionToken)
         }
     }
