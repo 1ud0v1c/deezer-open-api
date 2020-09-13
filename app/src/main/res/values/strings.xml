@@ -5,6 +5,12 @@
     <string name="ok_action">OK</string>
     <string name="retry_action">Retry</string>
 
+    <!-- Player action -->
+    <string name="player_play">Play</string>
+    <string name="player_pause">Pause</string>
+    <string name="player_next">Next</string>
+    <string name="player_previous">Previous</string>
+
     <!-- Home Activity -->
     <string name="home_activity_cover_content_description">Main activity album cover</string>
     <plurals name="home_activity_cover_album_number_of_track">

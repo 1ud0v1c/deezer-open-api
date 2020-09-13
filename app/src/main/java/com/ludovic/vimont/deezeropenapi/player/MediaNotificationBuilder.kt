@@ -18,7 +18,7 @@ import com.ludovic.vimont.deezeropenapi.helper.AndroidVersions
 
 /**
  * Used to display a media friendly notification to allow the user to interact with the current
- * MediaSession
+ * MediaSession.
  * @see: https://stackoverflow.com/questions/21872022/notification-for-android-music-player
  */
 class MediaNotificationBuilder {
@@ -40,7 +40,9 @@ class MediaNotificationBuilder {
             createNotificationChannel(notificationManager)
         }
 
-        val playState: PlayState = getPlayState(isPlaying)
+        val previousString: String = context.getString(R.string.player_previous)
+        val nextString: String = context.getString(R.string.player_next)
+        val playState: PlayState = getPlayState(context, isPlaying)
 
         val notificationCompat: NotificationCompat.Builder =
             NotificationCompat.Builder(context, CHANNEL_ID)
@@ -51,12 +53,12 @@ class MediaNotificationBuilder {
                 .setOngoing(false)
                 .setAutoCancel(false)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setStyle(createMediaStyle(mediaSessionCompat, context))
+                .setStyle(createMediaStyle(context, mediaSessionCompat))
                 .setContentIntent(getContentIntent(context, controller))
                 .setDeleteIntent(getDeleteIntent(context))
-                .addAction(getAction(context, R.drawable.ic_previous, "previous", PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS))
+                .addAction(getAction(context, R.drawable.ic_previous, previousString, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS))
                 .addAction(getAction(context, playState.drawable, playState.displayedText, playState.playbackStateAction))
-                .addAction(getAction(context, R.drawable.ic_next, "Next", PlaybackStateCompat.ACTION_SKIP_TO_NEXT))
+                .addAction(getAction(context, R.drawable.ic_next, nextString, PlaybackStateCompat.ACTION_SKIP_TO_NEXT))
 
         return notificationCompat.build()
     }
@@ -73,28 +75,22 @@ class MediaNotificationBuilder {
         notificationManager.createNotificationChannel(channel)
     }
 
-    private fun getPlayState(isPlaying: Boolean): PlayState {
+    private fun getPlayState(context: Context, isPlaying: Boolean): PlayState {
         return if (isPlaying) {
-            PlayState(R.drawable.ic_pause, "Pause", PlaybackStateCompat.ACTION_PAUSE)
+            val pauseString: String = context.getString(R.string.player_pause)
+            PlayState(R.drawable.ic_pause, pauseString, PlaybackStateCompat.ACTION_PAUSE)
         } else {
-            PlayState(R.drawable.ic_play, "Play", PlaybackStateCompat.ACTION_PLAY)
+            val playString: String = context.getString(R.string.player_play)
+            PlayState(R.drawable.ic_play, playString, PlaybackStateCompat.ACTION_PLAY)
         }
     }
 
-    private fun createMediaStyle(
-        mediaSessionCompat: MediaSessionCompat,
-        context: Context
-    ): androidx.media.app.NotificationCompat.MediaStyle? {
+    private fun createMediaStyle(context: Context, mediaSession: MediaSessionCompat): androidx.media.app.NotificationCompat.MediaStyle? {
         return androidx.media.app.NotificationCompat.MediaStyle()
-            .setMediaSession(mediaSessionCompat.sessionToken)
+            .setMediaSession(mediaSession.sessionToken)
             .setShowActionsInCompactView(0, 1, 2)
             .setShowCancelButton(true)
-            .setCancelButtonIntent(
-                MediaButtonReceiver.buildMediaButtonPendingIntent(
-                    context,
-                    PlaybackStateCompat.ACTION_STOP
-                )
-            )
+            .setCancelButtonIntent(getCancelIntent(context))
     }
 
     private fun getContentIntent(context: Context, controller: MediaControllerCompat): PendingIntent {
@@ -106,8 +102,13 @@ class MediaNotificationBuilder {
 
     private fun getDeleteIntent(context: Context): PendingIntent {
         return MediaButtonReceiver.buildMediaButtonPendingIntent(
-            context,
-            PlaybackStateCompat.ACTION_STOP
+            context, PlaybackStateCompat.ACTION_STOP
+        )
+    }
+
+    private fun getCancelIntent(context: Context): PendingIntent {
+        return MediaButtonReceiver.buildMediaButtonPendingIntent(
+            context, PlaybackStateCompat.ACTION_STOP
         )
     }
 

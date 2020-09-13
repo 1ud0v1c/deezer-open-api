@@ -39,7 +39,11 @@ class AudioPlayer: MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListe
                                 .build()
                         )
                     }
-                    mediaPlayer.setDataSource(url)
+                    if (AndroidVersions.inferiorOrEqualAtKitKat) {
+                        mediaPlayer.setDataSource(url.replace("https", "http"))
+                    } else {
+                        mediaPlayer.setDataSource(url)
+                    }
                     mediaPlayer.prepareAsync()
                     previousURL = url
                 }

@@ -69,6 +69,7 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
 
     private val connectionCallbacks: MediaBrowserCompat.ConnectionCallback = object : MediaBrowserCompat.ConnectionCallback() {
         override fun onConnected() {
+            println("onConnected")
             mediaBrowser.sessionToken.also { token ->
                 val mediaController = MediaControllerCompat(applicationContext, token)
                 MediaControllerCompat.setMediaController(this@DetailActivity, mediaController)
@@ -106,9 +107,6 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
                     }
                     PlaybackStateCompat.STATE_PAUSED -> {
                         println("paused")
-                    }
-                    else -> {
-                        println(state)
                     }
                 }
             }
@@ -193,6 +191,7 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
     }
 
     override fun setTracks(tracks: List<Track>) {
+        println("setTracks")
         trackAdapter.addItems(tracks)
         val albumDuration: String = computeAlbumDuration(tracks)
         val textDuration: String = resources.getString(R.string.detail_activity_album_duration, albumDuration, tracks.size)

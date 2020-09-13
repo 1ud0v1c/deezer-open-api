@@ -41,16 +41,16 @@ class DetailTrackAdapter(private val tracks: ArrayList<Track>): RecyclerView.Ada
         }
         holder.itemView.setOnClickListener {
             // If the previous viewHolder clicked is the same that before, we set him to passive state
-            lastViewHolderClicked = if (lastViewHolderClicked == holder) {
-                setPassiveState(holder)
-                null
+             if (lastViewHolderClicked == holder) {
+                 setPassiveState(holder)
+                 lastViewHolderClicked = null
             } else {
                 // Otherwise, we pass the last viewHolder to passive & update the current to active
                 lastViewHolderClicked?.let { lastTrackViewHolder ->
                     setPassiveState(lastTrackViewHolder)
                 }
                 setActiveState(holder)
-                holder
+                lastViewHolderClicked = holder
             }
             onItemClick?.invoke(track, lastViewHolderClicked != null)
         }
