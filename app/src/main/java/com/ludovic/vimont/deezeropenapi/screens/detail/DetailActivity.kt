@@ -1,6 +1,14 @@
 package com.ludovic.vimont.deezeropenapi.screens.detail
 
+import android.content.ComponentName
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.media.AudioManager
 import android.os.Bundle
+import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaMetadataCompat
+import android.support.v4.media.session.MediaControllerCompat
+import android.support.v4.media.session.PlaybackStateCompat
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -8,13 +16,19 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.snackbar.Snackbar
 import com.ludovic.vimont.deezeropenapi.R
 import com.ludovic.vimont.deezeropenapi.databinding.ActivityDetailBinding
+import com.ludovic.vimont.deezeropenapi.helper.AudioHelper
+import com.ludovic.vimont.deezeropenapi.helper.BitmapHelper
 import com.ludovic.vimont.deezeropenapi.helper.ViewHelper
 import com.ludovic.vimont.deezeropenapi.model.Album
 import com.ludovic.vimont.deezeropenapi.model.Track
+import com.ludovic.vimont.deezeropenapi.player.MediaPlaybackService
 import com.ludovic.vimont.deezeropenapi.screens.home.HomeActivity
 import com.ludovic.vimont.deezeropenapi.ui.MarginItemDecoration
 
@@ -27,6 +41,7 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
 
     private val trackAdapter = DetailTrackAdapter(ArrayList())
     private lateinit var detailBinding: ActivityDetailBinding
+    private lateinit var mediaBrowser: MediaBrowserCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,14 +62,93 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
             updateAlbumInformation(album)
             detailPresenter.start(applicationContext, album.getId())
         }
+
+        val componentName = ComponentName(applicationContext, MediaPlaybackService::class.java)
+        mediaBrowser = MediaBrowserCompat(applicationContext, componentName, connectionCallbacks, null)
+    }
+
+    private val connectionCallbacks: MediaBrowserCompat.ConnectionCallback = object : MediaBrowserCompat.ConnectionCallback() {
+        override fun onConnected() {
+            mediaBrowser.sessionToken.also { token ->
+                val mediaController = MediaControllerCompat(applicationContext, token)
+                MediaControllerCompat.setMediaController(this@DetailActivity, mediaController)
+            }
+            buildTransportControls()
+        }
+
+        override fun onConnectionSuspended() {
+            println("onConnectionSuspended, the Service has crashed.")
+        }
+
+        override fun onConnectionFailed() {
+            println("onConnectionFailed, the Service has refused our connection.")
+        }
+    }
+
+    fun buildTransportControls() {
+        val mediaController: MediaControllerCompat = MediaControllerCompat.getMediaController(this@DetailActivity)
+        mediaController.registerCallback(controllerCallback)
+    }
+
+    private var controllerCallback: MediaControllerCompat.Callback = object : MediaControllerCompat.Callback() {
+        override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
+            println("onMetadataChanged")
+            println(metadata?.mediaMetadata.toString())
+            println(metadata?.description)
+        }
+
+        override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
+            println("onPlaybackStateChanged")
+            state?.let { playbackState ->
+                when (playbackState.state) {
+                    PlaybackStateCompat.STATE_PLAYING -> {
+                        println("playing")
+                    }
+                    PlaybackStateCompat.STATE_PAUSED -> {
+                        println("paused")
+                    }
+                    else -> {
+                        println(state)
+                    }
+                }
+            }
+        }
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        mediaBrowser.connect()
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        volumeControlStream = AudioManager.STREAM_MUSIC
+    }
+
+    public override fun onStop() {
+        super.onStop()
+        MediaControllerCompat.getMediaController(this)?.unregisterCallback(controllerCallback)
+        mediaBrowser.disconnect()
     }
 
     private fun updateAlbumInformation(album: Album) {
+        var bitmap: Bitmap? = BitmapHelper.emptyBitmap()
+
         Glide.with(applicationContext)
+            .asBitmap()
             .load(album.cover_medium)
             .placeholder(R.drawable.album_default_cover)
-            .transition(DrawableTransitionOptions.withCrossFade(FADE_IN_DURATION))
-            .into(detailBinding.imageViewAlbumCover)
+            .transition(BitmapTransitionOptions.withCrossFade(FADE_IN_DURATION))
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    detailBinding.imageViewAlbumCover.setImageBitmap(resource)
+                    bitmap = resource
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    bitmap = null
+                }
+            })
 
         detailBinding.textViewAlbumTitle.text = album.title
 
@@ -83,6 +177,18 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
                 artistName.replace(" ", "_")
             )
             detailBinding.textViewArtistWikipediaPage.text = wikipediaPage
+
+            trackAdapter.onItemClick = { currentTrack, playingNeeded ->
+                val mediaController: MediaControllerCompat = MediaControllerCompat.getMediaController(this@DetailActivity)
+                AudioHelper.buildMediaDescriptionFromTrack(album, currentTrack, bitmap).let {
+                    mediaController.addQueueItem(it)
+                    if (playingNeeded) {
+                        mediaController.transportControls.play()
+                    } else {
+                        mediaController.transportControls.pause()
+                    }
+                }
+            }
         }
     }
 
