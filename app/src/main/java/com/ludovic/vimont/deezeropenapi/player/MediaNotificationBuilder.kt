@@ -30,7 +30,7 @@ class MediaNotificationBuilder {
         private const val CHANNEL_DESCRIPTION = "Play album tracks preview, in background"
     }
 
-    fun buildNotification(context: Context, mediaSessionCompat: MediaSessionCompat, isPlaying: Boolean = false): Notification? {
+    fun buildNotification(context: Context, mediaSessionCompat: MediaSessionCompat, currentTrack: Int, isPlaying: Boolean = false): Notification? {
         val controller: MediaControllerCompat = mediaSessionCompat.controller
         val mediaMetadata: MediaMetadataCompat = mediaSessionCompat.controller.metadata
         val description: MediaDescriptionCompat = mediaMetadata.description
@@ -41,8 +41,20 @@ class MediaNotificationBuilder {
         }
 
         val previousString: String = context.getString(R.string.player_previous)
-        val nextString: String = context.getString(R.string.player_next)
+        val previousIntent: NotificationCompat.Action? = if (currentTrack == 0) {
+            NotificationCompat.Action(0, previousString, null)
+        } else {
+            getAction(context, R.drawable.ic_previous, previousString, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)
+        }
+
         val playState: PlayState = getPlayState(context, isPlaying)
+
+        val nextString: String = context.getString(R.string.player_next)
+        val nextIntent: NotificationCompat.Action? = if (currentTrack == controller.queue.size-1) {
+            NotificationCompat.Action(0, nextString, null)
+        } else {
+            getAction(context, R.drawable.ic_next, nextString, PlaybackStateCompat.ACTION_SKIP_TO_NEXT)
+        }
 
         val notificationCompat: NotificationCompat.Builder =
             NotificationCompat.Builder(context, CHANNEL_ID)
@@ -56,9 +68,9 @@ class MediaNotificationBuilder {
                 .setStyle(createMediaStyle(context, mediaSessionCompat))
                 .setContentIntent(getContentIntent(context, controller))
                 .setDeleteIntent(getDeleteIntent(context))
-                .addAction(getAction(context, R.drawable.ic_previous, previousString, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS))
+                .addAction(previousIntent)
                 .addAction(getAction(context, playState.drawable, playState.displayedText, playState.playbackStateAction))
-                .addAction(getAction(context, R.drawable.ic_next, nextString, PlaybackStateCompat.ACTION_SKIP_TO_NEXT))
+                .addAction(nextIntent)
 
         return notificationCompat.build()
     }

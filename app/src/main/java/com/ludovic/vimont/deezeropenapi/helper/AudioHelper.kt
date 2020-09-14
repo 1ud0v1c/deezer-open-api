@@ -12,10 +12,16 @@ import com.ludovic.vimont.deezeropenapi.model.Track
 object AudioHelper {
     private const val PREVIEW_DURATION_IN_MS: Long = 30_000
     private const val PLAYBACK_SPEED: Float = 1.0f
+    private const val fullPlaybackStateAction: Long = PlaybackStateCompat.ACTION_PLAY or
+                                                      PlaybackStateCompat.ACTION_PAUSE or
+                                                      PlaybackStateCompat.ACTION_SKIP_TO_NEXT or
+                                                      PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS or
+                                                      PlaybackStateCompat.ACTION_SEEK_TO
 
     private val mediaMetadataBuilder = MediaMetadataCompat.Builder()
     private val mediaDescriptionBuilder = MediaDescriptionCompat.Builder()
     private val playbackStateCompatBuilder = PlaybackStateCompat.Builder()
+
 
     fun buildMediaDescriptionFromTrack(album: Album, track: Track, bitmap: Bitmap? = null): MediaDescriptionCompat {
         val songDuration = Bundle()
@@ -39,15 +45,9 @@ object AudioHelper {
             .build()
     }
 
-    fun getPlaybackState(playbackState: Int, positionInCurrentTrack: Long): PlaybackStateCompat? {
+    fun getPlaybackState(playbackState: Int, positionInCurrentTrack: Long, actions: Long = fullPlaybackStateAction): PlaybackStateCompat? {
         return playbackStateCompatBuilder.setState(playbackState, positionInCurrentTrack, PLAYBACK_SPEED)
-            .setActions(
-                PlaybackStateCompat.ACTION_PLAY or
-                PlaybackStateCompat.ACTION_PAUSE or
-                PlaybackStateCompat.ACTION_SKIP_TO_NEXT or
-                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS or
-                PlaybackStateCompat.ACTION_SEEK_TO
-            )
+            .setActions(actions)
             .build()
     }
 }

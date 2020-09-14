@@ -65,7 +65,8 @@ class AudioSessionCallback(private val service: MediaPlaybackService,
         val playBackState: PlaybackStateCompat? = AudioHelper.getPlaybackState(PlaybackStateCompat.STATE_PLAYING, positionInCurrentTrack)
         mediaSession.setPlaybackState(playBackState)
         audioPlayer.play(mediaSession.controller.metadata.description.mediaUri.toString())
-        service.startForeground(MediaNotificationBuilder.NOTIFICATION_ID, mediaNotification.buildNotification(context, mediaSession, true))
+        val notification = mediaNotification.buildNotification(context, mediaSession, currentIndex, true)
+        service.startForeground(MediaNotificationBuilder.NOTIFICATION_ID, notification)
     }
 
     override fun onPause() {
@@ -74,8 +75,10 @@ class AudioSessionCallback(private val service: MediaPlaybackService,
         val playBackState: PlaybackStateCompat? = AudioHelper.getPlaybackState(PlaybackStateCompat.STATE_PAUSED, positionInCurrentTrack)
         mediaSession.setPlaybackState(playBackState)
         audioPlayer.stop()
+
         val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(MediaNotificationBuilder.NOTIFICATION_ID, mediaNotification.buildNotification(context, mediaSession))
+        val notification = mediaNotification.buildNotification(context, mediaSession, currentIndex)
+        notificationManager.notify(MediaNotificationBuilder.NOTIFICATION_ID, notification)
         service.stopForeground(false)
     }
 
