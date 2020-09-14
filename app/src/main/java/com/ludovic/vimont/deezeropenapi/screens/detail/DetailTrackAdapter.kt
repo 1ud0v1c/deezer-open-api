@@ -20,7 +20,7 @@ import com.ludovic.vimont.deezeropenapi.model.Track
  */
 class DetailTrackAdapter(private val tracks: ArrayList<Track>): RecyclerView.Adapter<DetailTrackAdapter.TrackViewHolder>() {
     private var lastViewHolderClicked: TrackViewHolder? = null
-    var onItemClick: ((Track, Boolean) -> Unit)? = null
+    var onItemClick: ((Int, Boolean) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val itemView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_track, parent, false)
@@ -52,7 +52,7 @@ class DetailTrackAdapter(private val tracks: ArrayList<Track>): RecyclerView.Ada
                 setActiveState(holder)
                 lastViewHolderClicked = holder
             }
-            onItemClick?.invoke(track, lastViewHolderClicked != null)
+            onItemClick?.invoke(position, lastViewHolderClicked != null)
         }
     }
 
@@ -122,6 +122,10 @@ class DetailTrackAdapter(private val tracks: ArrayList<Track>): RecyclerView.Ada
     fun addItems(items: List<Track>) {
         tracks.addAll(items)
         notifyDataSetChanged()
+    }
+
+    fun getTracks(): List<Track> {
+        return tracks
     }
 
     class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
