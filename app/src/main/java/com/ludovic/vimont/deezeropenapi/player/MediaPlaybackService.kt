@@ -1,14 +1,15 @@
 package com.ludovic.vimont.deezeropenapi.player
 
+import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.text.TextUtils
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media.session.MediaButtonReceiver
-
-private const val MY_EMPTY_MEDIA_ROOT_ID = "empty_root_id"
+import com.ludovic.vimont.deezeropenapi.R
 
 /**
  * Create and handle exchange between the UI and the service, thanks and trough a MediaSession object
@@ -30,6 +31,11 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
             stateBuilder = PlaybackStateCompat.Builder().setActions(playStateActions)
             setPlaybackState(stateBuilder.build())
 
+            val mediaButtonIntent = Intent(Intent.ACTION_MEDIA_BUTTON)
+            mediaButtonIntent.setClass(applicationContext, MediaButtonReceiver::class.java)
+            val pendingIntent: PendingIntent = PendingIntent.getBroadcast(applicationContext, 0, mediaButtonIntent, 0)
+            setMediaButtonReceiver(pendingIntent)
+
             setCallback(AudioSessionCallback(this@MediaPlaybackService, this))
             setSessionToken(sessionToken)
         }
@@ -44,15 +50,13 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
         clientPackageName: String,
         clientUid: Int,
         rootHints: Bundle?): BrowserRoot? {
-        return BrowserRoot(MY_EMPTY_MEDIA_ROOT_ID, null)
+        if (TextUtils.equals(clientPackageName, packageName)) {
+            return BrowserRoot(getString(R.string.app_name), null)
+        }
+        return null
     }
 
-    override fun onLoadChildren(
-        parentId: String,
-        result: Result<MutableList<MediaBrowserCompat.MediaItem>>) {
-        if (MY_EMPTY_MEDIA_ROOT_ID == parentId) {
-            result.sendResult(null)
-            return
-        }
+    override fun onLoadChildren(parentId: String, result: Result<MutableList<MediaBrowserCompat.MediaItem>>) {
+        result.sendResult(null)
     }
 }

@@ -195,7 +195,7 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
             detailBinding.textViewArtistName.text = artistName
             val wikipediaPage: String = resources.getString(
                 R.string.detail_activity_artist_wikipedia,
-                artistName.replace(" ", "_")
+                artistName.replace(' ', '_')
             )
             detailBinding.textViewArtistWikipediaPage.text = wikipediaPage
 
