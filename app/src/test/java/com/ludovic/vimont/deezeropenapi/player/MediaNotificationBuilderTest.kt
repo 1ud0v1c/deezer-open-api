@@ -22,7 +22,7 @@ import org.mockito.Mockito.mock
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-@Config(sdk = [Build.VERSION_CODES.O], manifest = Config.NONE)
+@Config(sdk = [Build.VERSION_CODES.P], manifest = Config.NONE)
 @RunWith(RobolectricTestRunner::class)
 class MediaNotificationBuilderTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
@@ -39,7 +39,6 @@ class MediaNotificationBuilderTest {
     fun testBuildNotification() {
         val album: Album = ModelMock.buildAlbum()
         val track: Track = ModelMock.buildTrack()
-
         val metaDescriptionCompat: MediaDescriptionCompat = AudioHelper.buildMediaDescriptionFromTrack(album, track)
         val metadataCompat: MediaMetadataCompat = AudioHelper.mediaDescriptionToMediaMetadata(metaDescriptionCompat)
         val mediaControllerCompat: MediaControllerCompat = mock(MediaControllerCompat::class.java)

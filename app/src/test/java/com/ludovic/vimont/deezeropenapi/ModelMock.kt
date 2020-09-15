@@ -49,7 +49,7 @@ object ModelMock {
             "System of a Down",
             "System of a Down",
             "https://www.deezer.com/en/track/61064534",
-            "https://www.deezer.com/en/track/61064534",
+            "http://cdn-preview-2.deezer.com/stream/c-270f059f51b3da69cc45c0a0510f5bba-13.mp3",
             198,
             1,
             15_616,
