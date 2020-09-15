@@ -30,6 +30,7 @@ object AudioHelper {
         return mediaDescriptionBuilder.setTitle(track.title)
             .setSubtitle(album.artist?.name)
             .setDescription(track.link)
+            .setMediaId(track.track_position.toString())
             .setMediaUri(Uri.parse(track.preview))
             .setIconBitmap(bitmap)
             .setExtras(songDuration)
@@ -42,6 +43,7 @@ object AudioHelper {
             .putString(MediaMetadataCompat.METADATA_KEY_AUTHOR, mediaDescription.subtitle.toString())
             .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, mediaDescription.extras?.getLong(MediaMetadataCompat.METADATA_KEY_DURATION) ?: 0)
             .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, mediaDescription.mediaUri.toString())
+            .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, mediaDescription.mediaId.toString())
             .build()
     }
 

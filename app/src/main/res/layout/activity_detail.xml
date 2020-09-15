@@ -80,10 +80,10 @@
 
             <ImageView
                 android:id="@+id/image_view_artist_profile"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/artist_profile_size"
+                android:layout_height="@dimen/artist_profile_size"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:layout_weight="1" />
+                android:contentDescription="@string/detail_activity_artist_photo_content_description" />
 
             <LinearLayout
                 android:layout_width="0dp"

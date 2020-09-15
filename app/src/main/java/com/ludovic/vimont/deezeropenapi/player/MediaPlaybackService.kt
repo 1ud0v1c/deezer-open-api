@@ -25,7 +25,9 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
         super.onCreate()
 
         mediaSession = MediaSessionCompat(baseContext, TAG).apply {
-            setFlags(MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS)
+            setFlags(MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS
+                    or MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
+                    or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
 
             val playStateActions: Long = PlaybackStateCompat.ACTION_PLAY or PlaybackStateCompat.ACTION_PLAY_PAUSE
             stateBuilder = PlaybackStateCompat.Builder().setActions(playStateActions)
@@ -43,6 +45,10 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         MediaButtonReceiver.handleIntent(mediaSession, intent)
+        println("onStartCommand")
+        println(intent)
+        println(intent?.action)
+        println(intent?.extras)
         return super.onStartCommand(intent, flags, startId)
     }
 

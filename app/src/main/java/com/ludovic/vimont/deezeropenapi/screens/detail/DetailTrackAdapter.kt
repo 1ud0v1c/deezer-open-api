@@ -40,19 +40,23 @@ class DetailTrackAdapter(private val tracks: ArrayList<Track>): RecyclerView.Ada
             IntentHelper.openWebPage(context, track.link)
         }
         holder.itemView.setOnClickListener {
-            // If the previous viewHolder clicked is the same that before, we set him to passive state
-             if (lastViewHolderClicked == holder) {
-                 setPassiveState(holder)
-                 lastViewHolderClicked = null
-            } else {
-                // Otherwise, we pass the last viewHolder to passive & update the current to active
-                lastViewHolderClicked?.let { lastTrackViewHolder ->
-                    setPassiveState(lastTrackViewHolder)
-                }
-                setActiveState(holder)
-                lastViewHolderClicked = holder
-            }
+            updateViewHolderState(holder)
             onItemClick?.invoke(position, lastViewHolderClicked != null)
+        }
+    }
+
+    fun updateViewHolderState(holder: TrackViewHolder) {
+        // If the previous viewHolder clicked is the same that before, we set him to passive state
+        if (lastViewHolderClicked == holder) {
+            setPassiveState(holder)
+            lastViewHolderClicked = null
+        } else {
+            // Otherwise, we pass the last viewHolder to passive & update the current to active
+            lastViewHolderClicked?.let { lastTrackViewHolder ->
+                setPassiveState(lastTrackViewHolder)
+            }
+            setActiveState(holder)
+            lastViewHolderClicked = holder
         }
     }
 

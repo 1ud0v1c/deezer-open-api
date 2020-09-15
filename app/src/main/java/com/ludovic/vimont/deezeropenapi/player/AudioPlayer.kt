@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 class AudioPlayer: MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
     private var mediaPlayer: MediaPlayer? = null
     private var previousURL: String? = null
+    var onMusicEnd: (() -> Unit)? = null
 
     init {
         mediaPlayer = MediaPlayer()
@@ -71,6 +72,7 @@ class AudioPlayer: MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListe
         mediaPlayer?.release()
         mediaPlayer = null
         previousURL = null
+        onMusicEnd = null
     }
 
     override fun onPrepared(mediaPlayer: MediaPlayer?) {
@@ -80,6 +82,6 @@ class AudioPlayer: MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListe
     override fun onCompletion(mediaPlayer: MediaPlayer?) {
         stop()
         mediaPlayer?.reset()
-        // TODO: when do we release release()
+        onMusicEnd?.invoke()
     }
 }

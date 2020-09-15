@@ -23,14 +23,15 @@
 
         <activity android:name=".screens.detail.DetailActivity" />
 
-        <service android:name=".player.MediaPlaybackService"
-            android:exported="false">
+        <service
+            android:name=".player.MediaPlaybackService"
+            android:permission="false">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
 
-        <receiver android:name="androidx.media.session.MediaButtonReceiver" >
+        <receiver android:name="androidx.media.session.MediaButtonReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>

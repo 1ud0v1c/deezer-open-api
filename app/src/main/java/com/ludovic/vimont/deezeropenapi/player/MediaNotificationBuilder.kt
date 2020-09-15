@@ -6,6 +6,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
@@ -41,16 +42,17 @@ class MediaNotificationBuilder {
         }
 
         val previousString: String = context.getString(R.string.player_previous)
-        val previousIntent: NotificationCompat.Action? = if (currentTrack == 0) {
+        val previousAction: NotificationCompat.Action? = if (currentTrack == 0) {
             NotificationCompat.Action(0, previousString, null)
         } else {
             getAction(context, R.drawable.ic_previous, previousString, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)
         }
 
         val playState: PlayState = getPlayState(context, isPlaying)
+        val playAction: NotificationCompat.Action? = getAction(context, playState.drawable, playState.displayedText, playState.playbackStateAction)
 
         val nextString: String = context.getString(R.string.player_next)
-        val nextIntent: NotificationCompat.Action? = if (currentTrack == controller.queue.size-1) {
+        val nextAction: NotificationCompat.Action? = if (currentTrack == controller.queue.size-1) {
             NotificationCompat.Action(0, nextString, null)
         } else {
             getAction(context, R.drawable.ic_next, nextString, PlaybackStateCompat.ACTION_SKIP_TO_NEXT)
@@ -68,9 +70,9 @@ class MediaNotificationBuilder {
                 .setStyle(createMediaStyle(context, mediaSessionCompat))
                 .setContentIntent(getContentIntent(context, controller))
                 .setDeleteIntent(getDeleteIntent(context))
-                .addAction(previousIntent)
-                .addAction(getAction(context, playState.drawable, playState.displayedText, playState.playbackStateAction))
-                .addAction(nextIntent)
+                .addAction(previousAction)
+                .addAction(playAction)
+                .addAction(nextAction)
 
         return notificationCompat.build()
     }
@@ -102,7 +104,7 @@ class MediaNotificationBuilder {
             .setMediaSession(mediaSession.sessionToken)
             .setShowActionsInCompactView(0, 1, 2)
             .setShowCancelButton(true)
-            .setCancelButtonIntent(getCancelIntent(context))
+            .setCancelButtonIntent(getDeleteIntent(context))
     }
 
     private fun getContentIntent(context: Context, controller: MediaControllerCompat): PendingIntent {
@@ -113,22 +115,10 @@ class MediaNotificationBuilder {
     }
 
     private fun getDeleteIntent(context: Context): PendingIntent {
-        return MediaButtonReceiver.buildMediaButtonPendingIntent(
-            context, PlaybackStateCompat.ACTION_STOP
-        )
-    }
-
-    private fun getCancelIntent(context: Context): PendingIntent {
-        return MediaButtonReceiver.buildMediaButtonPendingIntent(
-            context, PlaybackStateCompat.ACTION_STOP
-        )
+        return MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_STOP)
     }
 
     private fun getAction(context: Context, drawable: Int, title: String, action: Long): NotificationCompat.Action {
-        return NotificationCompat.Action(drawable, title,
-            MediaButtonReceiver.buildMediaButtonPendingIntent(
-                context, action
-            )
-        )
+        return NotificationCompat.Action(drawable, title, MediaButtonReceiver.buildMediaButtonPendingIntent(context, action))
     }
 }
