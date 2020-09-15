@@ -31,26 +31,22 @@ class DetailMediaSessionHandler(private val detailActivity: DetailActivity): Med
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
-        println("onCreate from DetailMediaSessionHandler")
         val componentName = ComponentName(detailActivity, MediaPlaybackService::class.java)
         mediaBrowser = MediaBrowserCompat(detailActivity, componentName, this, null)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
-        println("onStart from DetailMediaSessionHandler")
         mediaBrowser.connect()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume() {
-        println("onResume from DetailMediaSessionHandler")
         detailActivity.volumeControlStream = AudioManager.STREAM_MUSIC
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
-        println("onStop from DetailMediaSessionHandler")
         MediaControllerCompat.getMediaController(detailActivity)?.unregisterCallback(controllerCallback)
         mediaBrowser.disconnect()
     }
@@ -108,7 +104,6 @@ class DetailMediaSessionHandler(private val detailActivity: DetailActivity): Med
      * custom action to the AudioSessionCallback.
      */
     fun askMediaSessionToSetCurrentTrack(clickedPosition: Int, playingNeeded: Boolean) {
-        println("askMediaSessionToSetCurrentTrack")
         val mediaController: MediaControllerCompat = MediaControllerCompat.getMediaController(detailActivity)
         val bundle = Bundle()
         bundle.putInt(AudioSessionCallback.KEY_CURRENT_TRACK, clickedPosition)
