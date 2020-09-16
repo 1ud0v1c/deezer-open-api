@@ -56,10 +56,11 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
         val linearLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
-        detailBinding.recyclerViewTracks.adapter = trackAdapter
-        detailBinding.recyclerViewTracks.layoutManager = linearLayoutManager
+        val recyclerViewTracks: RecyclerView = detailBinding.recyclerViewTracks
+        recyclerViewTracks.adapter = trackAdapter
+        recyclerViewTracks.layoutManager = linearLayoutManager
         val marginSize: Int = resources.getDimension(R.dimen.detail_activity_track_adapter_item_decoration_margin).toInt()
-        detailBinding.recyclerViewTracks.addItemDecoration(MarginItemDecoration(marginSize))
+        recyclerViewTracks.addItemDecoration(MarginItemDecoration(marginSize))
 
         val nullableAlbum: Album? = intent.extras?.getParcelable(HomeActivity.KEY_INTENT_ALBUM_EXTRA)
         nullableAlbum?.let { album ->

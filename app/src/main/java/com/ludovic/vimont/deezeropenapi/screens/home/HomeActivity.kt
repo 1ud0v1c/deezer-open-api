@@ -35,10 +35,11 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
         setContentView(mainBinding.root)
 
         val gridLayoutManager = GridLayoutManager(applicationContext, GRID_SPAN_COUNT)
-        mainBinding.recyclerViewAlbums.adapter = albumAdapter
-        mainBinding.recyclerViewAlbums.layoutManager = gridLayoutManager
+        val recyclerViewAlbums: RecyclerView = mainBinding.recyclerViewAlbums
+        recyclerViewAlbums.adapter = albumAdapter
+        recyclerViewAlbums.layoutManager = gridLayoutManager
         val gridSpaceDimension: Int = resources.getDimension(R.dimen.album_grid_space).toInt()
-        mainBinding.recyclerViewAlbums.addItemDecoration(GridSpacingItemDecoration(GRID_SPAN_COUNT, gridSpaceDimension, false))
+        recyclerViewAlbums.addItemDecoration(GridSpacingItemDecoration(GRID_SPAN_COUNT, gridSpaceDimension, false))
 
         endlessRecyclerViewScrollListener = object : EndlessRecyclerViewScrollListener(gridLayoutManager) {
             override fun onLoadMore(
@@ -48,7 +49,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
                 homePresenter.start(applicationContext, currentPage)
             }
         }
-        mainBinding.recyclerViewAlbums.addOnScrollListener(endlessRecyclerViewScrollListener)
+        recyclerViewAlbums.addOnScrollListener(endlessRecyclerViewScrollListener)
         albumAdapter.onItemClick = { album ->
             val intent = Intent(this, DetailActivity::class.java)
             intent.putExtra(KEY_INTENT_ALBUM_EXTRA, album)
