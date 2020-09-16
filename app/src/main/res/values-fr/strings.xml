@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Deezer OpenAPI</string>
+
+    <!-- Common action -->
+    <string name="action_ok">OK</string>
+    <string name="action_retry">Réesayer</string>
+
+    <!-- Player action -->
+    <string name="player_play">Lancer</string>
+    <string name="player_pause">Pause</string>
+    <string name="player_next">Suivant</string>
+    <string name="player_previous">Précédent</string>
+
+    <!-- Home Activity -->
+    <string name="home_activity_cover_content_description">Main activity album cover</string>
+    <plurals name="home_activity_cover_album_number_of_track">
+        <item quantity="one">%d piste</item>
+        <item quantity="other">%d pistes</item>
+    </plurals>
+
+    <!-- Detail Activity -->
+    <string name="detail_activity_cover_content_description">Detail activity album cover</string>
+    <string name="detail_activity_album_information">Album de %s - %s</string>
+    <string name="detail_activity_album_duration">Durée: %s - %d musiques</string>
+    <string name="detail_activity_album_artist">Artiste de l\'album</string>
+    <string name="detail_activity_artist_photo_content_description">Photo de profile de l\'artiste</string>
+    <string name="detail_activity_artist_wikipedia">https://en.wikipedia.org/wiki/%s</string>
+
+    <string name="item_track_play_content_description">Item track preview lancement</string>
+    <string name="item_track_share_action_content_description">Item track action de partage</string>
+    <string name="item_track_see_on_web_content_description">Item track action rechercher sur internet</string>
+</resources>
