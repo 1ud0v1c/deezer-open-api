@@ -30,6 +30,7 @@ class AudioPlayerTest {
             isReadyTopPlay = true
         }
 
+        // @see: https://stackoverflow.com/questions/60188034/android-testing-mediaplayer-inside-a-service
         ShadowMediaPlayer.addMediaInfo(DataSource.toDataSource(track.preview, HashMap<String, String>()),
             ShadowMediaPlayer.MediaInfo(150, 0)
         )
