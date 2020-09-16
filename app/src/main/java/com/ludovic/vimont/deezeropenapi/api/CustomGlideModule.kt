@@ -10,6 +10,10 @@ import com.bumptech.glide.module.AppGlideModule
 import okhttp3.OkHttpClient
 import java.io.InputStream
 
+/**
+ * We implements our own GlideModule to be able to change the OkHttpClient and thus be able to
+ * succeed to load cover successfully on Android Kitkat.
+ */
 @GlideModule
 class CustomGlideModule: AppGlideModule() {
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {

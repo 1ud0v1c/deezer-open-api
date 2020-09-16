@@ -41,6 +41,13 @@ object ViewHelper {
         colorAnim.start()
     }
 
+    /**
+     * Give us the possibility to create a text with a certain portion in a different color
+     * @param textView the View to update
+     * @param text the text, we need it to know the total size of the string
+     * @param textToHighlight the text we want to put in color
+     * @param highlightColor the color to use
+     */
     fun highlightTextViewWithColor(textView: TextView, text: String, textToHighlight: String, highlightColor: Int) {
         val spannable: Spannable = SpannableString(text)
         val beginOfTextToHighlight: Int = text.indexOf(textToHighlight)

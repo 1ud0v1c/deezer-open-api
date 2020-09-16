@@ -8,11 +8,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /**
- * Little wrapper for MediaPlayer, to easily interact with it from the MediaSession callback
+ * Little wrapper for MediaPlayer, to easily interact with it from the MediaSession callback.
  */
 class AudioPlayer: MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
     private var mediaPlayer: MediaPlayer? = null
     private var previousURL: String? = null
+    var onMusicReady: (() -> Unit)? = null
     var onMusicEnd: (() -> Unit)? = null
 
     init {
@@ -52,7 +53,7 @@ class AudioPlayer: MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListe
         }
     }
 
-    private fun isPlaying(): Boolean {
+    fun isPlaying(): Boolean {
         return mediaPlayer?.isPlaying == true
     }
 
@@ -60,6 +61,10 @@ class AudioPlayer: MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListe
         if (isPlaying()) {
             mediaPlayer?.seekTo(position)
         }
+    }
+
+    fun getCurrentPosition(): Int {
+        return mediaPlayer?.currentPosition ?: 0
     }
 
     fun stop() {
@@ -73,10 +78,12 @@ class AudioPlayer: MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListe
         mediaPlayer = null
         previousURL = null
         onMusicEnd = null
+        onMusicReady = null
     }
 
     override fun onPrepared(mediaPlayer: MediaPlayer?) {
         mediaPlayer?.start()
+        onMusicReady?.invoke()
     }
 
     override fun onCompletion(mediaPlayer: MediaPlayer?) {

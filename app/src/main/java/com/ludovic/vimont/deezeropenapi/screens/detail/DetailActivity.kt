@@ -29,6 +29,10 @@ import com.ludovic.vimont.deezeropenapi.player.AudioSessionCallback
 import com.ludovic.vimont.deezeropenapi.screens.home.HomeActivity
 import com.ludovic.vimont.deezeropenapi.ui.MarginItemDecoration
 
+/**
+ * Activity which will list all the information about an Album and display the tracks of the album.
+ * We can launch each track with our audio player.
+ */
 class DetailActivity : AppCompatActivity(), DetailContract.View {
     companion object {
         const val FADE_IN_DURATION = 500

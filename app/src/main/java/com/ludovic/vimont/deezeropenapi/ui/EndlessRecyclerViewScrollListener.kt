@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
  * RecyclerView which load data after reaching a certain offset
  * @see https://guides.codepath.com/android/endless-scrolling-with-adapterviews-and-recyclerview
  */
-abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollListener {
-    private var layoutManager: RecyclerView.LayoutManager
+abstract class EndlessRecyclerViewScrollListener(layoutManager: GridLayoutManager): RecyclerView.OnScrollListener() {
+    private var layoutManager: RecyclerView.LayoutManager = layoutManager
 
     // True if we are still waiting for the last set of data to load.
     private var isLoading = true
@@ -25,12 +25,7 @@ abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollListener
 
     private var previousTotalItemCount = 0
 
-    constructor(layoutManager: LinearLayoutManager) {
-        this.layoutManager = layoutManager
-    }
-
-    constructor(layoutManager: GridLayoutManager) {
-        this.layoutManager = layoutManager
+    init {
         this.visibleThreshold = visibleThreshold * layoutManager.spanCount
     }
 

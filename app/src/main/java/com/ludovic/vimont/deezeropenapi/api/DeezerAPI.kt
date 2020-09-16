@@ -7,6 +7,13 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+/**
+ * Represent the Deezer OpenAPI, We can find two endpoints:
+ * <ul>
+ *     <li>getAlbums: get information about a user albums</li>
+ *     <li>getTracks: get information about the tracks of an albums, we need the album_id</li>
+ * </ul>
+ */
 interface DeezerAPI {
     object Constants {
         const val HOSTNAME = "api.deezer.com"

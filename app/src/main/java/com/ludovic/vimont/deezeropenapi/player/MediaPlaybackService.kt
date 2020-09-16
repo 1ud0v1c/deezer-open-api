@@ -17,9 +17,10 @@ import com.ludovic.vimont.deezeropenapi.R
 class MediaPlaybackService : MediaBrowserServiceCompat() {
     companion object {
         val TAG: String = MediaPlaybackService::class.java.simpleName
+        const val KEY_EVENT_STOP = "media_playback_service_stop"
     }
     private var mediaSession: MediaSessionCompat? = null
-    private lateinit var stateBuilder: PlaybackStateCompat.Builder
+    private lateinit var sessionCallback: AudioSessionCallback
 
     override fun onCreate() {
         super.onCreate()
@@ -30,7 +31,7 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
                     or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
 
             val playStateActions: Long = PlaybackStateCompat.ACTION_PLAY or PlaybackStateCompat.ACTION_PLAY_PAUSE
-            stateBuilder = PlaybackStateCompat.Builder().setActions(playStateActions)
+            val stateBuilder: PlaybackStateCompat.Builder = PlaybackStateCompat.Builder().setActions(playStateActions)
             setPlaybackState(stateBuilder.build())
 
             val mediaButtonIntent = Intent(Intent.ACTION_MEDIA_BUTTON)
@@ -38,17 +39,17 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
             val pendingIntent: PendingIntent = PendingIntent.getBroadcast(applicationContext, 0, mediaButtonIntent, 0)
             setMediaButtonReceiver(pendingIntent)
 
-            setCallback(AudioSessionCallback(this@MediaPlaybackService, this))
+            sessionCallback = AudioSessionCallback(this@MediaPlaybackService, this)
+            setCallback(sessionCallback)
             setSessionToken(sessionToken)
         }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         MediaButtonReceiver.handleIntent(mediaSession, intent)
-        println("onStartCommand")
-        println(intent)
-        println(intent?.action)
-        println(intent?.extras)
+        intent?.extras?.containsKey(KEY_EVENT_STOP)?.let {
+            sessionCallback.onStop()
+        }
         return super.onStartCommand(intent, flags, startId)
     }
 

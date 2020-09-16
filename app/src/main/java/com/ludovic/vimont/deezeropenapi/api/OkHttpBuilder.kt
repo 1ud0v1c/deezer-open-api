@@ -33,15 +33,19 @@ object OkHttpBuilder {
         val builder = OkHttpClient.Builder()
         builder.sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
         builder.hostnameVerifier { hostname, sslSession ->
-            val hostnameVerifier: HostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier()
-            val deezerHostname: String = DeezerAPI.Constants.HOSTNAME
-            val cdnHostname: String = DeezerAPI.Constants.CDN_HOSTNAME
-            if (hostname == deezerHostname || hostname == cdnHostname) {
-                true
-            } else {
-                hostnameVerifier.verify(hostname, sslSession)
-            }
+            isHostnameAuthorized(hostname, sslSession)
         }
         return builder.build()
+    }
+
+    private fun isHostnameAuthorized(hostname: String?, sslSession: SSLSession?): Boolean {
+        val hostnameVerifier: HostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier()
+        val deezerHostname: String = DeezerAPI.Constants.HOSTNAME
+        val cdnHostname: String = DeezerAPI.Constants.CDN_HOSTNAME
+        return if (hostname == deezerHostname || hostname == cdnHostname) {
+            true
+        } else {
+            hostnameVerifier.verify(hostname, sslSession)
+        }
     }
 }

@@ -20,6 +20,7 @@ class AudioSessionCallback(private val service: MediaPlaybackService,
     companion object {
         const val MEDIA_SESSION_ACTION_SET_PLAYLIST = "media_session_set_playlist"
         const val MEDIA_SESSION_ACTION_SET_CURRENT_TRACK = "media_session_set_current_track"
+
         const val KEY_PLAYLIST = "media_session_key_playlist"
         const val KEY_CURRENT_TRACK = "media_session_key_current_track"
         const val KEY_ACTION_FROM = "media_session_key_action_from"
@@ -34,6 +35,10 @@ class AudioSessionCallback(private val service: MediaPlaybackService,
         }
     }
 
+    /**
+     * We implement the onCustomAction to pass the queue by intent and thus set the playlist of all
+     * the track preview of an album.
+     */
     override fun onCustomAction(action: String?, extras: Bundle?) {
         super.onCustomAction(action, extras)
         when (action) {
@@ -77,8 +82,9 @@ class AudioSessionCallback(private val service: MediaPlaybackService,
         val playBackState: PlaybackStateCompat? = AudioHelper.getPlaybackState(PlaybackStateCompat.STATE_PLAYING, positionInCurrentTrack)
         mediaSession.setPlaybackState(playBackState)
         audioPlayer.play(mediaSession.controller.metadata.description.mediaUri.toString())
-        val notification = mediaNotification.buildNotification(context, mediaSession, currentIndex, true)
-        service.startForeground(MediaNotificationBuilder.NOTIFICATION_ID, notification)
+        mediaNotification.buildNotification(context, mediaSession, currentIndex, true)?.apply {
+            service.startForeground(MediaNotificationBuilder.NOTIFICATION_ID, this)
+        }
     }
 
     override fun onPause() {
@@ -97,6 +103,7 @@ class AudioSessionCallback(private val service: MediaPlaybackService,
     override fun onStop() {
         service.stopSelf()
         mediaSession.isActive = false
+        mediaSession.release()
         audioPlayer.release()
         service.stopForeground(false)
     }

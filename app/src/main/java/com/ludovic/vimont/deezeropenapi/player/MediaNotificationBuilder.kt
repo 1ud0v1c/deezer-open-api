@@ -6,6 +6,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
@@ -114,7 +115,9 @@ class MediaNotificationBuilder {
     }
 
     private fun getDeleteIntent(context: Context): PendingIntent {
-        return MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_STOP)
+        val intent = Intent(context, MediaPlaybackService::class.java)
+        intent.putExtra(MediaPlaybackService.KEY_EVENT_STOP, true)
+        return PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
     }
 
     private fun getAction(context: Context, drawable: Int, title: String, action: Long): NotificationCompat.Action {

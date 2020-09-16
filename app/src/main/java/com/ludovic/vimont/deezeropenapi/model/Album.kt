@@ -43,6 +43,9 @@ data class Album(
         return id
     }
 
+    /**
+     * A simple tool to be able to change the date format as we want.
+     */
     fun getReleaseDate(desiredReleaseDateFormat: String = DESIRE_RELEASE_DATE_FORMAT): String {
         val formatDate: Date? = SimpleDateFormat(DEEZER_RELEASE_DATE_FORMAT, Locale.getDefault()).parse(release_date)
         formatDate?.let { date ->

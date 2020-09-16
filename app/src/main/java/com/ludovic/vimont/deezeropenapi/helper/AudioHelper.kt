@@ -9,6 +9,11 @@ import android.support.v4.media.session.PlaybackStateCompat
 import com.ludovic.vimont.deezeropenapi.model.Album
 import com.ludovic.vimont.deezeropenapi.model.Track
 
+/**
+ * Simplify the interaction with MediaSession. We create the builder and keep it in memory like
+ * adviced during the 2016's Google I/O.
+ * @see https://youtu.be/iIKxyDRjecU?t=1328
+ */
 object AudioHelper {
     private const val PREVIEW_DURATION_IN_MS: Long = 30_000
     private const val PLAYBACK_SPEED: Float = 1.0f
@@ -21,7 +26,6 @@ object AudioHelper {
     private val mediaMetadataBuilder = MediaMetadataCompat.Builder()
     private val mediaDescriptionBuilder = MediaDescriptionCompat.Builder()
     private val playbackStateCompatBuilder = PlaybackStateCompat.Builder()
-
 
     fun buildMediaDescriptionFromTrack(album: Album, track: Track, bitmap: Bitmap? = null): MediaDescriptionCompat {
         val songDuration = Bundle()
