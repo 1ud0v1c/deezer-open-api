@@ -56,8 +56,12 @@ class HomeAlbumAdapter(private val albums: ArrayList<Album>): RecyclerView.Adapt
     }
 
     fun addItems(items: List<Album>) {
+        val lastAlbumsSize: Int = albums.size
         albums.addAll(items)
-        notifyDataSetChanged()
+        val newAlbumsSize: Int = albums.size
+        if (newAlbumsSize > lastAlbumsSize) {
+            notifyItemRangeChanged(lastAlbumsSize, newAlbumsSize)
+        }
     }
 
     class AlbumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
