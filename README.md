@@ -13,8 +13,8 @@ I will split the details about my implementation in 3 parts: HomeActivity, Detai
 
 ### HomeActivity
 
-> 1 - Pour chaque album, vous devrez afficher l’image correspondante dans la grille. En attendant que les images soient chargées, ces images devront toutes avoir 
-> une image par défaut.
+> 1 - Pour chaque album, vous devrez afficher l’image correspondante dans la grille. En attendant que les images soient chargées, ces images devront toutes avoir une image par défaut.
+
 > 2 - Lorsqu’une image est reçue du serveur, elle doit s’afficher avec une animation de type “fade_in”.
 
 ![HomeActivity default cover](https://github.com/1ud0v1c/deezer-open-api/raw/master/data/home/default_cover.jpg "")
@@ -32,6 +32,7 @@ I handle the case when you will have a weak connection and thus sometimes, you c
 ### DetailActivity
 
 > 3 - Le tap sur un album devra afficher un second écran affichant les détails de l’album.
+
 > 4 - Laissez libre cours à votre imagination
 
 As soon as you have clicked on the item, we transfer the result of the date fetched during the cover loading by passing them with the Intent. We display all the current data we have about the album, while loading the tracks of the album. When, it's done we can display them. As for the album, we also have a default profile 
@@ -39,6 +40,9 @@ image for the artist.
 
 ![DetailActivity loaded tracks](https://github.com/1ud0v1c/deezer-open-api/raw/master/data//detail/track_loaded.jpg "")
 ![DetailActivity about artisrt](https://github.com/1ud0v1c/deezer-open-api/raw/master/data/detail/artist.jpg "")
+
+Like for the HomeActivity, I handled the weak connection and thus the timeout which can occurred.
+
 ![DetailActivity error loading](https://github.com/1ud0v1c/deezer-open-api/raw/master/data/detail/error.jpg "")
 
 On a click on one of the track, you can launch an audio player (more detail about it incoming) and listen to the preview of the song. I also provided a little animation to put the focus on the current selected song. Last, but not least I provided two intents to be able to share or looking for the track on internet. 
@@ -54,14 +58,14 @@ I implemented a wrapper about the [MediaPlayer class](https://developer.android.
 to the music preview played in background. It was working well but was a bit frustrating to not be able to control very precisely the playing. I wanted to have a 
 fine control, like audio player as Deezer does.
 
-![Deezer example](https://github.com/1ud0v1c/deezer-open-api/raw/master/data/deezer_player_example.jpg "")
+![Deezer example](https://github.com/1ud0v1c/deezer-open-api/raw/master/data/player/deezer_player_example.jpg "")
 
 After reading a lot of documentation, I discovered the [MediaSession API](https://developer.android.com/reference/android/media/session/MediaSession) and wanted to 
 implement it. It took me some time to understand it, but I think I succeed to make a simple implementation of it. Thanks to some [project example](https://github.com/android/uamp) and of conference like the [2016's Google I/O](https://www.youtube.com/watch?v=iIKxyDRjecU).
 
 Here is the result of the player project :
 
-![Project example](https://github.com/1ud0v1c/deezer-open-api/raw/master/data/project_player.jpg "")
+![Project example](https://github.com/1ud0v1c/deezer-open-api/raw/master/data/player/project_player.jpg "")
 
 
 ## Design
@@ -76,7 +80,7 @@ or [dribble](https://dribbble.com/). I think I succed to propose a good look and
 I didn't have the occasion to play with animated vector drawable but I took time for this project to play with it. And thanks to this [wonderful project](https://shapeshifter.design) and this [wonderful tutorial](https://sourcediving.com/android-recipes-the-easy-path-to-animated-icons-878bffcb0920), I have been able to 
 implement a simple animation, when you click on a track from the DetailTrackAdapter you have a color and morphin animation playing together. 
 
-![Gif VectorDrawable animation](data/detail_activity_animated_vector_drawable.gif)
+![Gif VectorDrawable animation](data/design/detail_activity_animated_vector_drawable.gif)
 
 
 ## Architecture 
@@ -153,8 +157,7 @@ Here is the list of all devices on which the application was tested.
 
 ## What can be improve ?
 
-- After analysis the json return by the API, I saw that we can have a list of the top 50 tracks of an artist. I was thinking, it could be a great opportunity to add it.
+- After analysis the json returned by the API, I saw that we can have a list of the top 50 tracks of an artist. I was thinking, it could be a great opportunity to add it in a separate page dedicated to the artist.
 - For now, the application is only working, if you have access to the network. It could be very great to persist the data with an appropriate database. [Room](https://developer.android.com/topic/libraries/architecture/room) seems a great way to do it.
-- I succeed to use the MediaSession API propose by Android to have a fully working audio player but I would have been more than happy to be able to cast the player 
-on my personal Google Chromecast. Maybe later...
-- During my reading about Media API, I took time to watch the last news about it and since Android 11, they introduce a "[Seamless transfert](https://youtu.be/fhii2K9o6ts?t=320)" functionality. They gave us the possibility to change the audio output, easily from the notification. A must have.
+- I succeed to use the MediaSession API propose by Android to have a fully working audio player but I would have been more than happy to be able to cast the player on my personal [Google Chromecast](https://store.google.com/product/chromecast_setup). Maybe later...
+- During my reading about Media API, I took time to watch the last news about it and since Android 11, they introduce a "[Seamless transfer](https://youtu.be/fhii2K9o6ts?t=320)" functionality. They gave us the possibility to change the audio output, easily from the notification. A must have.
