@@ -125,7 +125,7 @@ class AudioSessionCallback(private val service: MediaPlaybackService,
         setCurrentMetaData(currentIndex)
 
         val currentPlayBackState: Int = mediaSession.controller.playbackState.state
-        val playBackState: PlaybackStateCompat? = AudioHelper.getPlaybackState(PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS, 0)
+        val playBackState: PlaybackStateCompat? = AudioHelper.getPlaybackState(PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS, 0, currentIndex)
         mediaSession.setPlaybackState(playBackState)
         adaptPlayerState(currentPlayBackState)
     }
@@ -141,7 +141,7 @@ class AudioSessionCallback(private val service: MediaPlaybackService,
         setCurrentMetaData(currentIndex)
 
         val currentPlayBackState: Int = mediaSession.controller.playbackState.state
-        val playBackState: PlaybackStateCompat? = AudioHelper.getPlaybackState(PlaybackStateCompat.STATE_SKIPPING_TO_NEXT, 0)
+        val playBackState: PlaybackStateCompat? = AudioHelper.getPlaybackState(PlaybackStateCompat.STATE_SKIPPING_TO_NEXT, 0, currentIndex)
         mediaSession.setPlaybackState(playBackState)
         adaptPlayerState(currentPlayBackState)
     }

@@ -8,6 +8,7 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import com.ludovic.vimont.deezeropenapi.model.Album
 import com.ludovic.vimont.deezeropenapi.model.Track
+import com.ludovic.vimont.deezeropenapi.player.AudioSessionCallback
 
 /**
  * Simplify the interaction with MediaSession. We create the builder and keep it in memory like
@@ -51,9 +52,24 @@ object AudioHelper {
             .build()
     }
 
+
     fun getPlaybackState(playbackState: Int, positionInCurrentTrack: Long, actions: Long = fullPlaybackStateAction): PlaybackStateCompat? {
         return playbackStateCompatBuilder.setState(playbackState, positionInCurrentTrack, PLAYBACK_SPEED)
             .setActions(actions)
+            .build()
+    }
+
+    fun getPlaybackState(playbackState: Int,
+                         positionInCurrentTrack: Long,
+                         currentTrack: Int? = null,
+                         actions: Long = fullPlaybackStateAction): PlaybackStateCompat? {
+        val bundle = Bundle()
+        currentTrack?.let { track ->
+            bundle.putInt(AudioSessionCallback.KEY_CURRENT_TRACK, track)
+        }
+        return playbackStateCompatBuilder.setState(playbackState, positionInCurrentTrack, PLAYBACK_SPEED)
+            .setActions(actions)
+            .setExtras(bundle)
             .build()
     }
 }

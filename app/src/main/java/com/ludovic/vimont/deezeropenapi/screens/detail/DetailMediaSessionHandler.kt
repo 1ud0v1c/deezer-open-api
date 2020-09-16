@@ -60,6 +60,13 @@ class DetailMediaSessionHandler(private val detailActivity: DetailActivity): Med
         val mediaController: MediaControllerCompat = MediaControllerCompat.getMediaController(detailActivity)
         mediaController.registerCallback(controllerCallback)
         detailActivity.computeQueue(mediaController)
+
+        mediaController.playbackState.extras?.let { bundle ->
+            if (bundle.containsKey(AudioSessionCallback.KEY_CURRENT_TRACK)) {
+                val newValue: Int = bundle.getInt(AudioSessionCallback.KEY_CURRENT_TRACK)
+                detailActivity.updateAdapterViewHolderState(newValue)
+            }
+        }
     }
 
     override fun onConnectionSuspended() {
