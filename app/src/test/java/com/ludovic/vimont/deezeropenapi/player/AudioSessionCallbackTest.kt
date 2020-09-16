@@ -4,13 +4,11 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Looper.getMainLooper
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import androidx.test.core.app.ApplicationProvider
 import com.ludovic.vimont.deezeropenapi.ModelMock
 import com.ludovic.vimont.deezeropenapi.helper.AudioHelper
 import com.ludovic.vimont.deezeropenapi.helper.BitmapHelper
@@ -26,11 +24,9 @@ import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowMediaPlayer
 import org.robolectric.shadows.util.DataSource
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 

@@ -84,6 +84,8 @@ implement a simple animation, when you click on a track from the DetailTrackAdap
 
 ![Gif VectorDrawable animation](data/design/detail_activity_animated_vector_drawable.gif)
 
+I found the icon launcher of the application on [deviantArt](https://www.deviantart.com/icondesire/art/Music-Player-348049166).
+
 
 ## Architecture 
 
