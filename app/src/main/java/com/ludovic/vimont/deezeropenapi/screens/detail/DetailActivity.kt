@@ -179,11 +179,20 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
         return String.format(ALBUM_DURATION_FORMAT, minutes, seconds)
     }
 
-    override fun showErrorMessage(errorMessage: String) {
+    override fun showErrorMessage(errorMessage: String, canRetry: Boolean) {
         val snackBar: Snackbar = Snackbar.make(detailBinding.root,
             errorMessage, Snackbar.LENGTH_INDEFINITE
         )
-        snackBar.setAction(getString(R.string.ok_action)) {
+        var actionToDisplay: String = applicationContext.getString(R.string.action_ok)
+        if (canRetry) {
+            actionToDisplay = applicationContext.getString(R.string.action_retry)
+        }
+        snackBar.setAction(actionToDisplay) {
+            if (canRetry) {
+                mAlbum?.let { album ->
+                    detailPresenter.start(applicationContext, album.getId())
+                }
+            }
             snackBar.dismiss()
         }
         val snackBarView: View = snackBar.view

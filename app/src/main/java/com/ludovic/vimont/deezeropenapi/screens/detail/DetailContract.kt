@@ -6,7 +6,7 @@ interface DetailContract {
     interface View {
         fun setTracks(tracks: List<Track>)
 
-        fun showErrorMessage(errorMessage: String)
+        fun showErrorMessage(errorMessage: String, canRetry: Boolean = false)
     }
 
     interface Interactor {

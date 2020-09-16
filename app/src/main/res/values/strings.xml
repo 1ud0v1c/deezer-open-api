@@ -2,8 +2,8 @@
     <string name="app_name">Deezer OpenAPI</string>
 
     <!-- Common action -->
-    <string name="ok_action">OK</string>
-    <string name="retry_action">Retry</string>
+    <string name="action_ok">OK</string>
+    <string name="action_retry">Retry</string>
 
     <!-- Player action -->
     <string name="player_play">Play</string>

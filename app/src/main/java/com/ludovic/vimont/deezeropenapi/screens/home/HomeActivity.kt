@@ -66,7 +66,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
         val snackBar: Snackbar = Snackbar.make(mainBinding.root,
             errorMessage, Snackbar.LENGTH_INDEFINITE
         )
-        snackBar.setAction(getString(R.string.retry_action)) {
+        snackBar.setAction(getString(R.string.action_retry)) {
             homePresenter.start(applicationContext, endlessRecyclerViewScrollListener.getCurrentPage())
             snackBar.dismiss()
         }
